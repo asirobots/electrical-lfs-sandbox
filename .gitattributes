@@ -1,0 +1,24 @@
+# ============================================================
+#  electrical-lfs-sandbox  —  file handling rules
+# ============================================================
+#
+#  This sandbox uses plain text files only, so there are no
+#  Git LFS rules here.
+#
+#  The real repo (electrical-lfs) tracks Danfoss GUIDE files
+#  (.p1x, .p1d, .scs) with Git LFS. Day to day that works the
+#  same as anything else: add, commit, push. See CONTRIBUTING.md
+#  if you want the details.
+#
+# ------------------------------------------------------------
+#  Line endings
+# ------------------------------------------------------------
+#  Normalize text files to LF inside the repo, check out native
+#  on Windows. Keeps diffs clean across machines.
+* text=auto
+
+#  Files that must never be line-ending converted
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.zip   binary

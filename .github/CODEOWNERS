@@ -1,0 +1,37 @@
+# ============================================================
+#  CODEOWNERS  —  who gets asked to review what
+# ============================================================
+#
+#  GitHub reads this file from the DEFAULT BRANCH (main) and
+#  automatically requests a review from the matching owner on
+#  every pull request that touches a matching path.
+#
+#  Syntax works like .gitignore: a path pattern, then one or
+#  more @usernames or @org/team-names. THE LAST MATCHING LINE
+#  WINS, so put general rules first and specific ones after.
+#
+#  An owner must have write access to this repo or the rule is
+#  ignored. GitHub shows a warning banner on this file's page
+#  on github.com if a name doesn't resolve - worth a look after
+#  the first commit.
+#
+# ------------------------------------------------------------
+#  This sandbox: one owner for everything.
+# ------------------------------------------------------------
+
+*    @HopperASI
+
+# ------------------------------------------------------------
+#  For reference only - not active here.
+#
+#  In the real repo you'd scope by market, so each team owns
+#  its own folder and the EE lead owns what's shared:
+#
+#    *                @asirobots/ee-leads
+#    /ag/             @asirobots/ag-electrical
+#    /dozer/          @asirobots/dozer-electrical
+#    /adt-wt/         @asirobots/adt-wt-electrical
+#    /shared/         @asirobots/ee-leads
+#
+#  Last match wins, so the market lines override the catch-all.
+# ------------------------------------------------------------
