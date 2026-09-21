@@ -20,7 +20,9 @@ Your work does not live on `main`. Not on somebody else's branch. Not on a share
 <market>/<topic>
 ```
 
-All lowercase. Hyphens between words. For example:
+All lowercase. Hyphens between words. slashes (folders) to group markets and topics.
+The easy way to remember is "don't touch shift for branches"
+For example:
 
 ```
 ag/pump-ctrl-rev-b
