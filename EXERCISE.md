@@ -1,7 +1,7 @@
 # Exercise: sign the guestbook
 
 **Goal:** get one file of your own into this repo, on a properly named
-branch, through a Pull Request. That's it. That's the whole skill.
+branch, and merged to master through a Pull Request. That's it. That's the whole skill.
 
 Everything below happens in **Git Bash**, inside your clone of this repo.
 
@@ -63,38 +63,39 @@ git checkout -b training/smith-jane
 `-b` means "create it". `checkout` switches you onto it. Git confirms with
 `Switched to a new branch`.
 
-**All lowercase, hyphens between words. You should never need the Shift key
-to type a branch name** — not the letters, not the hyphen, not the slash.
-If you pressed Shift, you typed it wrong.
+**All lowercase, hyphens between words. You should never need the Shift key to type a branch name** 
+— not the letters, not the hyphen, not the slash. If you pressed Shift, you typed it wrong.
 
 > **What just happened:** you made yourself a private workspace. Nothing you
 > do from here affects anyone else until you push it and open a Pull Request.
 
 ---
 
-## Step 3 — do your "work": sign the guestbook
+## Step 3 — sign the guestbook
 
-On a real day this is where you'd do your actual engineering. Today, create
-a text file in the `guestbook` folder named after yourself.
+On a real day this step is where you'd do your actual engineering. 
+Today, we just sign the guest book by creating a text file in the `guestbook` folder named after yourself.
 
 Jane Smith creates `guestbook/JaneSmith.txt`:
+(if you can manage windows file extensions, you can do this step in explorer
+ and your editor of choice, otherwise just use these commands:)
 
 ```bash
 touch guestbook/JaneSmith.txt
 notepad guestbook/JaneSmith.txt
 ```
 
-`touch` makes an empty file; `notepad` opens it. Put in just your name and
-your market:
+`touch` makes an empty text file. `notepad` opens it — use another editor if
+you prefer. Put in just your name and your market:
 
 ```
 Jane Smith
 dozer
 ```
 
-Save it and close Notepad.
+Save it and close the editor.
 
-> **Note on the name:** the no-Shift-key rule is for **branch names**.
+> **Note on the file name:** the no-Shift-key rule is for **branch names**.
 > Filenames just need to be sensible — capitals are fine here.
 
 ---
@@ -110,11 +111,11 @@ watching it yet — Git doesn't assume everything in the folder belongs in
 the repo.
 
 **Read the line Git prints underneath.** It tells you exactly what to do
-next: *use "git add &lt;file&gt;..." to include in what will be committed.*
+next: *use "git add <file>..." to include in what will be committed.*
 
 ---
 
-## Step 5 — do what Git just told you
+## Step 5 — do what Git just told you, add the file
 
 ```bash
 git add guestbook/JaneSmith.txt
@@ -140,14 +141,15 @@ my next save."
 
 ## Step 7 — commit
 
-```bash
-git commit -m "Add Jane Smith to guestbook"
-```
-
+Run this command to commit with a message (the part in quotes)
 > **You must include `-m` and a message in quotes.** Leave it off and Git
 > opens a full-screen editor called vim, which is genuinely hard to escape.
 > If that happens: press **Esc**, type **:q!**, press Enter. Then run the
 > command again with `-m`.
+
+```bash
+git commit -m "Added my name to the guestbook"
+```
 
 ---
 
@@ -158,7 +160,7 @@ git status
 ```
 
 Clean working tree, and **"Your branch is ahead of 'origin/...' by 1 commit"**.
-You've saved it locally. Nobody else can see it yet.
+This means you've saved it locally. Nobody else can see it yet.
 
 ---
 
