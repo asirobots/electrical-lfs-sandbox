@@ -8,6 +8,15 @@ Everything below happens in **Git Bash**, inside your clone of this repo.
 Take your time. If you fall behind, say so in the meeting chat — the point
 is that everybody finishes, not that anybody finishes fast.
 
+> ### Before you start: this repo is public
+>
+> Anyone on the internet can read it. Put nothing in your file that you
+> wouldn't put on a public website — no customer names, no project details,
+> no phone numbers, no part numbers. Your name and your market, that's it.
+>
+> Getting in the habit of asking *"should this be public?"* before you commit
+> is worth more than anything else in this exercise.
+
 ---
 
 ## Step 0 — where am I?
@@ -20,36 +29,42 @@ Read the output. It tells you what branch you're on and whether you have
 uncommitted changes. You will run this command more than any other. When
 something feels wrong, run it first.
 
-You should see `On branch main` and `nothing to commit, working tree clean`.
+You should see `On branch master` and `nothing to commit, working tree clean`.
 
 ---
 
-## Step 1 — start from the latest main
+## Step 1 — start from the latest master
 
 ```bash
-git checkout main
+git checkout master
 git pull
 ```
 
 `checkout` switches branches. `pull` downloads whatever other people have
 merged since you last looked. **Always start a new branch from an up-to-date
-`main`** — it saves you conflicts later.
+`master`** — it saves you conflicts later.
 
 ---
 
 ## Step 2 — make your branch
 
-```bash
-git checkout -b <your-market>/guestbook-<your-name>
-```
-
-For example:
+Today everyone uses the same shape: `training/lastname-firstname`
 
 ```bash
-git checkout -b dozer/guestbook-jsmith
+git checkout -b training/lastname-firstname
 ```
 
-The `-b` means "create it". All lowercase, hyphens between words.
+So Jane Smith types:
+
+```bash
+git checkout -b training/smith-jane
+```
+
+The `-b` means "create it".
+
+**All lowercase, hyphens between words. You should never need the Shift key
+to type a branch name** — not for the letters, not for the hyphen, not for
+the slash. If you pressed Shift, you typed it wrong.
 
 Check it worked:
 
@@ -57,28 +72,32 @@ Check it worked:
 git status
 ```
 
-It should now say `On branch dozer/guestbook-jsmith`.
+It should now say `On branch training/smith-jane`.
 
-> **What just happened:** you made a private workspace. Nothing you do on this
-> branch affects anyone else until you push it and open a PR.
+> **What just happened:** you made yourself a private workspace. Nothing you
+> do on this branch affects anyone else until you push it and open a PR.
 
 ---
 
 ## Step 3 — add your file
 
-Create a file at `guestbook/<your-name>.md`. Use any editor — Notepad is fine.
+Name it the same way as your branch. Jane Smith creates
+`guestbook/smith-jane.md`:
 
-Put whatever you like in it. A suggestion:
+```bash
+touch guestbook/smith-jane.md
+notepad guestbook/smith-jane.md
+```
+
+`touch` makes an empty file; `notepad` opens it. Put in just this:
 
 ```markdown
 # Jane Smith
 
 - Market: dozer
-- Years doing EE work: 12
-- One thing I want Git to stop doing to me:
 ```
 
-Save it.
+Save it and close Notepad.
 
 ---
 
@@ -96,7 +115,7 @@ isn't watching it yet.
 ## Step 5 — stage it
 
 ```bash
-git add guestbook/<your-name>.md
+git add guestbook/smith-jane.md
 git status
 ```
 
@@ -115,6 +134,11 @@ of my next save."
 git commit -m "Add Jane Smith to guestbook"
 ```
 
+> **You must include the `-m` and a message in quotes.** If you leave it off,
+> Git opens a full-screen editor called vim and it is genuinely hard to get
+> back out of. If that happens to you: press **Esc**, then type **:q!** and
+> press Enter. Then run the command again with `-m`.
+
 That's a save point in your local history. It still only exists on your
 machine.
 
@@ -123,7 +147,7 @@ machine.
 ## Step 7 — push
 
 ```bash
-git push -u origin <your-market>/guestbook-<your-name>
+git push -u origin training/smith-jane
 ```
 
 Now it exists on GitHub. The `-u` links your local branch to the remote one,
@@ -138,9 +162,12 @@ Look at the output — GitHub prints a link for opening a Pull Request.
 Click that link, or go to the repo on GitHub and use the **Compare & pull
 request** button.
 
-- Base: `main`
+- Base: `master`
 - Compare: your branch
-- Give it a title, click **Create pull request**
+- Leave the title as-is and click **Create pull request**
+
+Notice the title GitHub wrote for you — it came from your branch name, for
+free. That's what a good branch name buys you.
 
 Then watch the screen share. We'll merge them live.
 

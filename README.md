@@ -17,7 +17,7 @@ part is mostly invisible — you add, commit and push the same way either way.
 | File | What it's for |
 |---|---|
 | **[EXERCISE.md](EXERCISE.md)** | The walkthrough. Start here if you're new. |
-| **[CONTRIBUTING.md](CONTRIBUTING.md)** | Branch naming and how work reaches `main`. |
+| **[CONTRIBUTING.md](CONTRIBUTING.md)** | Branch naming and how work reaches `master`. |
 
 ## Before the training
 

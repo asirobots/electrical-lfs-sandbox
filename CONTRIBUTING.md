@@ -8,9 +8,9 @@ habits you build here are the habits you want.
 
 ## The one rule
 
-> **Your work lives on a branch with a proper name, and reaches `main` through release-candidate Pull Request then a main Pull Request.**
+> **Your work lives on a branch with a proper name, and reaches `master` through release-candidate Pull Request then a master Pull Request.**
 
-Your work does not live on `main`. Not on somebody else's branch. Not on a shared catch-all branch where nobody can tell whose work is whose.
+Your work does not live on `master`. Not on somebody else's branch. Not on a shared catch-all branch where nobody can tell whose work is whose.
 
 ---
 
@@ -50,26 +50,21 @@ adt-wt/pump-ctrl/wiring
 
 ---
 
-## How work reaches `main`
+## How work reaches `master`
 
 ```
    your branch              market collection point         everyone
                                                                |
- ag/pump-ctrl-rev-b  --PR-->  ag/release-candidate  --PR-->  main
+ ag/pump-ctrl-rev-b  --PR-->  ag/release-candidate  --PR-->  master
  ag/harness-rework   --PR-->      (market review)          (final review)
 ```
 
-1. You branch off `main` or your market's `release-candidate` and do your work.
+1. You branch off `master` or your market's `release-candidate` and do your work.
 2. You open a PR into **`<market>/release-candidate`**. Your market reviews it.
-3. When the market is ready, `<market>/release-candidate` is PR'd into `main`.
+3. When the market is ready, `<market>/release-candidate` is PR'd into `master`.
    That one triggers the platform level review.
 
-Nobody commits directly to `main`. Not even the repo admin — the server refuses it.
-
-> **Note:** this sandbox calls its default branch `main`. The real repo,
-> `electrical-lfs`, calls it `master`. Same idea, different name — `main` is
-> GitHub's newer default and `master` is the older one. You'll see both in the
-> wild, so it's worth knowing they mean the same thing.
+Nobody commits directly to `master`. Not even the repo admin — the server refuses it.
 
 ---
 
