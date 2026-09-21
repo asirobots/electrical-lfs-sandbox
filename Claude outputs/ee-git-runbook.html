@@ -1,0 +1,677 @@
+<title>EE Git Session Runbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+  :root{
+    --paper:#F4F6F4;
+    --surface:#FFFFFF;
+    --surface-2:#EAEEEB;
+    --ink:#161D1A;
+    --ink-2:#414D48;
+    --ink-3:#6B7873;
+    --rule:#D3DAD6;
+    --accent:#0D6B5E;
+    --accent-soft:#DCEBE7;
+    --alarm:#9A4415;
+    --alarm-soft:#F6E6DA;
+    --say:#2C4A78;
+    --say-soft:#E1E9F4;
+    --term-bg:#152020;
+    --term-ink:#DCE8E4;
+    --term-dim:#7E948E;
+    --term-accent:#6FD3BC;
+
+    --f-display:'Archivo','Helvetica Neue',Arial,sans-serif;
+    --f-body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+    --f-mono:'IBM Plex Mono','Cascadia Mono',Consolas,monospace;
+
+    --measure:74ch;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0E1513;
+      --surface:#151E1B;
+      --surface-2:#1C2724;
+      --ink:#E6EDEA;
+      --ink-2:#B3C1BC;
+      --ink-3:#7F8F89;
+      --rule:#2B3833;
+      --accent:#5FC9B2;
+      --accent-soft:#16302B;
+      --alarm:#E8A277;
+      --alarm-soft:#332115;
+      --say:#9FBCE6;
+      --say-soft:#17243A;
+      --term-bg:#0A100F;
+      --term-ink:#DCE8E4;
+      --term-dim:#6E827D;
+      --term-accent:#6FD3BC;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0E1513;
+    --surface:#151E1B;
+    --surface-2:#1C2724;
+    --ink:#E6EDEA;
+    --ink-2:#B3C1BC;
+    --ink-3:#7F8F89;
+    --rule:#2B3833;
+    --accent:#5FC9B2;
+    --accent-soft:#16302B;
+    --alarm:#E8A277;
+    --alarm-soft:#332115;
+    --say:#9FBCE6;
+    --say-soft:#17243A;
+    --term-bg:#0A100F;
+    --term-ink:#DCE8E4;
+    --term-dim:#6E827D;
+    --term-accent:#6FD3BC;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--f-body);
+    font-size:16px;
+    line-height:1.55;
+    margin:0;
+  }
+  .wrap{
+    max-width:var(--measure);
+    margin:0 auto;
+    padding-inline:16px;
+    padding-block:0 96px;
+  }
+
+  /* ---------- sticky nav ---------- */
+  nav{
+    position:sticky;
+    top:env(safe-area-inset-top, 0px);
+    z-index:20;
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--rule);
+  }
+  .navinner{
+    max-width:var(--measure);
+    margin:0 auto;
+    padding-inline:16px;
+    padding-block:8px;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  nav a{
+    font-family:var(--f-mono);
+    font-size:11px;
+    letter-spacing:.04em;
+    text-decoration:none;
+    color:var(--ink-2);
+    background:var(--surface-2);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:3px 7px;
+    white-space:nowrap;
+  }
+  nav a:hover{color:var(--accent);border-color:var(--accent)}
+  nav a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  /* ---------- masthead ---------- */
+  header.mast{padding-block:40px 28px;border-bottom:3px solid var(--ink)}
+  .kicker{
+    font-family:var(--f-mono);
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:var(--f-display);
+    font-weight:700;
+    font-size:clamp(30px,6.5vw,46px);
+    line-height:1.04;
+    letter-spacing:-.02em;
+    margin:0 0 12px;
+    text-wrap:balance;
+  }
+  .standfirst{
+    font-size:17px;
+    color:var(--ink-2);
+    margin:0;
+    max-width:60ch;
+  }
+  .facts{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    margin-top:22px;
+    border-top:1px solid var(--rule);
+  }
+  .fact{
+    flex:1 1 150px;
+    padding:12px 14px 12px 0;
+    border-right:1px solid var(--rule);
+  }
+  .fact:last-child{border-right:none}
+  .fact dt{
+    font-family:var(--f-mono);
+    font-size:10px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-3);
+    margin:0 0 3px;
+  }
+  .fact dd{margin:0;font-weight:600;font-size:15px}
+
+  /* ---------- blocks ---------- */
+  section.block{
+    padding-block:30px;
+    border-bottom:1px solid var(--rule);
+    scroll-margin-top:60px;
+  }
+  .blockhead{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}
+  .clock{
+    font-family:var(--f-mono);
+    font-weight:600;
+    font-size:13px;
+    color:var(--surface);
+    background:var(--ink);
+    padding:3px 8px;
+    border-radius:3px;
+    white-space:nowrap;
+  }
+  .block.prep .clock{background:var(--accent);color:var(--surface)}
+  h2{
+    font-family:var(--f-display);
+    font-weight:600;
+    font-size:clamp(22px,4.4vw,29px);
+    letter-spacing:-.015em;
+    line-height:1.12;
+    margin:0;
+    text-wrap:balance;
+  }
+  .purpose{
+    color:var(--ink-3);
+    font-style:italic;
+    margin:0 0 20px;
+    font-size:15px;
+  }
+  h3{
+    font-family:var(--f-mono);
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--ink-3);
+    margin:26px 0 10px;
+    padding-bottom:5px;
+    border-bottom:1px solid var(--rule);
+  }
+  p{margin:0 0 13px}
+  ul,ol{margin:0 0 13px;padding-left:20px}
+  li{margin-bottom:6px}
+  li::marker{color:var(--ink-3)}
+  strong{font-weight:600}
+  code{
+    font-family:var(--f-mono);
+    font-size:.88em;
+    background:var(--surface-2);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:1px 4px;
+  }
+
+  /* ---------- say / trap / note ---------- */
+  .say,.trap,.note{
+    border-left:3px solid;
+    padding:12px 14px;
+    margin:0 0 14px;
+    border-radius:0 4px 4px 0;
+  }
+  .say{background:var(--say-soft);border-color:var(--say)}
+  .trap{background:var(--alarm-soft);border-color:var(--alarm)}
+  .note{background:var(--accent-soft);border-color:var(--accent)}
+  .label{
+    display:block;
+    font-family:var(--f-mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    margin-bottom:5px;
+  }
+  .say .label{color:var(--say)}
+  .trap .label{color:var(--alarm)}
+  .note .label{color:var(--accent)}
+  .say p:last-child,.trap p:last-child,.note p:last-child,
+  .say ul:last-child,.trap ul:last-child,.note ul:last-child{margin-bottom:0}
+  .say p{font-size:16px}
+
+  /* ---------- terminal ---------- */
+  .term{
+    background:var(--term-bg);
+    color:var(--term-ink);
+    font-family:var(--f-mono);
+    font-size:13.5px;
+    line-height:1.7;
+    border-radius:5px;
+    padding:12px 14px;
+    margin:0 0 14px;
+    overflow-x:auto;
+  }
+  .term .p{color:var(--term-accent)}
+  .term .c{color:var(--term-dim)}
+
+  /* ---------- steps ---------- */
+  ol.steps{list-style:none;padding:0;margin:0;counter-reset:s -1}
+  ol.steps > li{
+    counter-increment:s;
+    position:relative;
+    padding-left:40px;
+    padding-bottom:22px;
+    margin:0;
+    border-left:1px solid var(--rule);
+    margin-left:11px;
+  }
+  ol.steps > li:last-child{border-left-color:transparent;padding-bottom:0}
+  ol.steps > li::before{
+    content:counter(s);
+    position:absolute;
+    left:-11px;
+    top:0;
+    width:22px;height:22px;
+    background:var(--accent);
+    color:#fff;
+    font-family:var(--f-mono);
+    font-size:11px;
+    font-weight:600;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+  }
+  :root[data-theme="dark"] ol.steps > li::before,
+  :root:not([data-theme="light"]) ol.steps > li::before{color:#0A100F}
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]) ol.steps > li::before{color:#fff}
+  }
+  .stepname{
+    font-family:var(--f-display);
+    font-weight:600;
+    font-size:17px;
+    margin:0 0 8px;
+    line-height:1.25;
+  }
+
+  /* ---------- checklist ---------- */
+  ul.check{list-style:none;padding:0;margin:0 0 13px}
+  ul.check li{display:flex;gap:9px;align-items:flex-start;margin-bottom:8px}
+  ul.check input{margin-top:4px;flex:none;accent-color:var(--accent)}
+
+  /* ---------- rules table ---------- */
+  .rules{display:grid;gap:10px;margin:0 0 14px}
+  .rule{
+    background:var(--surface);
+    border:1px solid var(--rule);
+    border-radius:5px;
+    padding:12px 14px;
+  }
+  .rule .n{
+    font-family:var(--f-mono);
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--accent);
+    display:block;
+    margin-bottom:4px;
+  }
+  .rule .r{font-weight:600;font-size:16px;margin:0 0 5px}
+  .rule .w{color:var(--ink-2);font-size:14.5px;margin:0}
+
+  footer{padding-block:34px;color:var(--ink-3);font-size:14px}
+
+  @media print{
+    nav{display:none}
+    body{background:#fff;font-size:11pt}
+    section.block{page-break-inside:avoid}
+    .term{background:#f2f2f2;color:#000;border:1px solid #bbb}
+    .term .p,.term .c{color:#555}
+  }
+</style>
+
+<nav>
+  <div class="navinner">
+    <a href="#prep">prep</a>
+    <a href="#open">0:00 open</a>
+    <a href="#why">0:02 why</a>
+    <a href="#rules">0:05 rules</a>
+    <a href="#exercise">0:10 exercise</a>
+    <a href="#merge">0:27 merge</a>
+    <a href="#hours">0:30 office hours</a>
+    <a href="#traps">traps</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="kicker">Facilitator runbook · electrical-lfs-sandbox</p>
+  <h1>Getting EE work into the repo</h1>
+  <p class="standfirst">Thirty minutes of guided hands-on, then thirty minutes of help. One goal: everybody ends the hour having put a file into a shared repo, on a properly named branch, through a pull request.</p>
+  <dl class="facts">
+    <div class="fact"><dt>Slot</dt><dd>First of two presenters</dd></div>
+    <div class="fact"><dt>Format</dt><dd>30 min guided · 30 min help</dd></div>
+    <div class="fact"><dt>Room</dt><dd>~6–20 EEs, mixed skill</dd></div>
+    <div class="fact"><dt>Repo</dt><dd>electrical-lfs-sandbox</dd></div>
+  </dl>
+</header>
+
+<!-- ============ PREP ============ -->
+<section class="block prep" id="prep">
+  <div class="blockhead"><span class="clock">–10 min</span><h2>Before you join</h2></div>
+  <p class="purpose">Ten minutes of setup that buys back five minutes of fumbling on camera.</p>
+
+  <ul class="check">
+    <li><input type="checkbox" id="p1"><label for="p1"><strong>Git Bash open</strong> at <code>C:\GitLocal\electrical-lfs-sandbox</code>, on <code>master</code>, <code>git status</code> clean.</label></li>
+    <li><input type="checkbox" id="p2"><label for="p2"><strong>Bump the Git Bash font to ~20pt.</strong> Right-click the title bar → Options → Text. People are watching on laptops; default size is unreadable shared.</label></li>
+    <li><input type="checkbox" id="p3"><label for="p3"><strong>Two browser tabs:</strong> the repo's Code page, and its Pull requests page.</label></li>
+    <li><input type="checkbox" id="p4"><label for="p4"><strong>Delete the merged <code>setup/seed-files</code> branch</strong> — and your own <code>training/hopper-eric</code> test branch — so the branch list starts empty and theirs are the only names that appear.</label></li>
+    <li><input type="checkbox" id="p5"><label for="p5"><strong>Do Not Disturb on.</strong> Close Outlook. Nobody needs to see your inbox.</label></li>
+    <li><input type="checkbox" id="p6"><label for="p6"><strong>Pick your own demo branch name now</strong> so you don't invent one live: <code>training/hopper-eric</code>.</label></li>
+    <li><input type="checkbox" id="p7"><label for="p7"><strong>This runbook on a second screen</strong>, not the shared one.</label></li>
+  </ul>
+
+  <div class="note">
+    <span class="label">Decide before you start</span>
+    <p>Are you demonstrating each command first and then waiting, or typing in lockstep with them? <strong>Demo-then-wait is better.</strong> They watch you do it once, then do it themselves while you watch the chat. Typing together means the slowest person sets your pace and you can't see who's stuck.</p>
+  </div>
+</section>
+
+<!-- ============ OPEN ============ -->
+<section class="block" id="open">
+  <div class="blockhead"><span class="clock">0:00 – 0:02</span><h2>Open</h2></div>
+  <p class="purpose">Set the goal, defuse the anxiety, give the fast people a job.</p>
+
+  <div class="say">
+    <span class="label">Say — the goal</span>
+    <p>"By the end of the next thirty minutes, every one of you will have put a file into a shared repo, on a branch with a proper name, through a pull request. That's the whole goal. If you already know how to do that, stick around anyway — the naming rules are ours, not GitHub's."</p>
+  </div>
+
+  <div class="say">
+    <span class="label">Say — the escape hatch</span>
+    <p>"If your Git Bash isn't working, don't panic and don't spend this half hour fighting it. You can do this entire exercise in the browser instead. Drop a note in chat and keep moving — I'll find you afterward."</p>
+  </div>
+
+  <div class="say">
+    <span class="label">Say — recruit the experts</span>
+    <p>"Some of you have used Git for years and I'm going to go slower than you need. If you're ahead, watch the chat and help whoever's stuck. That's genuinely the most useful thing you can do for the next half hour."</p>
+  </div>
+
+  <div class="say">
+    <span class="label">Say — the repo is public</span>
+    <p>"One thing before we start: this practice repo is currently public, meaning anyone on the internet can read it. So when you make your file, put your name and your market and nothing else. No customer names, no part numbers, no project details."</p>
+    <p>"That habit — asking 'should this be public?' before you commit — is worth more than anything else I'm going to show you today."</p>
+  </div>
+
+  <div class="note">
+    <span class="label">Why the 'help your neighbor' line matters</span>
+    <p>It converts your biggest disruption risk into your support staff, and it gets your conventions taught out loud by the people most likely to ignore them.</p>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="block" id="why">
+  <div class="blockhead"><span class="clock">0:02 – 0:05</span><h2>Why we're doing this</h2></div>
+  <p class="purpose">Three minutes. Name the real problem, then stop — don't lecture.</p>
+
+  <div class="say">
+    <span class="label">Say</span>
+    <p>"Two things are happening right now. First, a lot of EE work never makes it into the repo at all — it lives on somebody's laptop. Second, the work that does make it in often lands in one shared branch where nobody can tell whose changes are whose, and we step on each other."</p>
+    <p>"The fix is small. Your work goes on a branch. The branch has a name that says which market and what you're doing. It comes back to <code>main</code> through a pull request. That's it — that's the entire ask."</p>
+  </div>
+
+  <h3>Show, briefly</h3>
+  <p>Put the sandbox's branch list on screen. Right now it's nearly empty — say that by the end of the half hour it'll have everyone's name in it, and that <em>that</em> is what the real repo should look like.</p>
+
+  <div class="trap">
+    <span class="label">Resist</span>
+    <p>Don't get drawn into <em>why</em> the current state happened, or whose fault it is. Somebody will offer a reason. Acknowledge it in one sentence and move — this block is three minutes and it's the easiest one to blow.</p>
+  </div>
+</section>
+
+<!-- ============ RULES ============ -->
+<section class="block" id="rules">
+  <div class="blockhead"><span class="clock">0:05 – 0:10</span><h2>Branch naming rules</h2></div>
+  <p class="purpose">Slides here. Five minutes, four ideas. They need this before they can do step 3 of the exercise.</p>
+
+  <div class="term"><span class="c"># the shape</span>
+&lt;market&gt;/&lt;topic&gt;
+
+<span class="c"># real examples</span>
+ag/pump-ctrl-rev-b
+dozer/harness-rework
+compactor/vibe-motor-swap
+adt-wt/pump-ctrl/sensor-cal   <span class="c">← optional subtopic</span></div>
+
+  <div class="rules">
+    <div class="rule">
+      <span class="n">Rule 1 — the one they'll remember</span>
+      <p class="r">Never touch the Shift key.</p>
+      <p class="w">Every character in a branch name is unshifted: lowercase letters, the hyphen, the slash. If you pressed Shift, you typed it wrong. <strong>Why:</strong> GitHub treats upper and lower case as different branches; Windows doesn't. Mix them and you get two branches on the server that your PC can't tell apart — and tab-completion stops working.</p>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 2 — the one that bites</span>
+      <p class="r">A name is a branch OR a folder of branches. Never both.</p>
+      <p class="w">Git stores each branch as a real file on disk. If <code>ag/pump-ctrl</code> exists as a branch, <code>ag/pump-ctrl/sensor-cal</code> cannot be created — you can't have a file and a folder with the same name. So if you think you'll want sub-branches under a topic, don't create the bare topic branch.</p>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 3</span>
+      <p class="r"><code>release-candidate</code> is reserved.</p>
+      <p class="w">Each market's <code>&lt;market&gt;/release-candidate</code> is where that market collects work for internal review before it's PR'd to <code>main</code>. Don't use that name for ordinary work.</p>
+    </div>
+    <div class="rule">
+      <span class="n">Rule 4 — the payoff</span>
+      <p class="r">A good branch name writes your PR title for you.</p>
+      <p class="w">Show them: the <code>setup/seed-files</code> branch produced a PR titled <em>"Setup/seed files."</em> GitHub capitalizes it and swaps the hyphens for spaces, free. A branch called <code>stuff2</code> produces a PR called <em>"Stuff2."</em> This is the moment the convention stops feeling like bureaucracy.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <span class="label">Then narrow it for today</span>
+    <p>Tell them that for this exercise everyone uses one shape instead: <code>training/lastname-firstname</code> — e.g. <code>training/smith-jane</code>.</p>
+    <p><strong>Say why:</strong> "I don't want fifteen practice branches cluttering up the market namespaces, and I don't want anyone stuck deciding which market they're in before they can start. The rules are identical — lowercase, hyphens, slash, no Shift key. Only the first segment changes."</p>
+  </div>
+
+  <div class="say">
+    <span class="label">Say — the war story (60 seconds, optional but good)</span>
+    <p>"In the real repo we have a branch called <code>blitz</code>. Blitz is also a market. Which means nobody can create <code>blitz/anything</code> until we rename it — you get a cryptic error about not being able to lock a ref. That's rule 2, and it's not hypothetical."</p>
+  </div>
+</section>
+
+<!-- ============ EXERCISE ============ -->
+<section class="block" id="exercise">
+  <div class="blockhead"><span class="clock">0:10 – 0:27</span><h2>The exercise: sign the guestbook</h2></div>
+  <p class="purpose">Seventeen minutes. Demo each step, then wait. <code>git status</code> between steps is the metronome — it's not extra work, it's the thing that makes the rest learnable.</p>
+
+  <div class="note">
+    <span class="label">The shape of this block</span>
+    <p><strong><code>git status</code> is the spine.</strong> It runs after every state change, and each time it prints something different — untracked, staged, ahead by one, up to date. That's not repetition, that's the lesson: Git tells you where you are, and usually what to do next.</p>
+    <p><strong>Step 4 sets up step 5.</strong> Git literally prints <em>use "git add &lt;file&gt;..." to include in what will be committed</em>. Let Git introduce the command rather than introducing it yourself — it's the moment they learn to read the output instead of following a script.</p>
+    <p><strong>Don't skip <code>git add</code>.</strong> A brand-new file cannot be committed without it, and <code>git commit -a</code> won't rescue you — it only picks up changes to files Git already tracks. Skip it and fifteen people hit <em>"nothing added to commit but untracked files present"</em> at the same moment.</p>
+  </div>
+
+  <ol class="steps">
+    <li>
+      <p class="stepname">refresh the clone</p>
+      <div class="term"><span class="p">$</span> cd /c/GitLocal/electrical-lfs-sandbox
+<span class="p">$</span> git pull</div>
+      <p><strong>Don't skip this.</strong> Anyone who cloned before this morning has the <em>old</em> EXERCISE.md — different branch shape, wrong default branch. One <code>git pull</code> fixes it.</p>
+    </li>
+
+    <li>
+      <p class="stepname">where am I?</p>
+      <div class="term"><span class="p">$</span> git status</div>
+      <p><strong>Say:</strong> "This is the command you'll run more than any other. Read the output — it's written for humans, and it usually names the command you want next. When something feels wrong, run this first."</p>
+      <p>Everyone sees <code>On branch master</code>, <code>nothing to commit, working tree clean</code>.</p>
+    </li>
+
+    <li>
+      <p class="stepname">branch and switch</p>
+      <div class="term"><span class="p">$</span> git checkout -b training/hopper-eric</div>
+      <p>They substitute their own lastname-firstname. <code>-b</code> means "create it"; <code>checkout</code> switches onto it.</p>
+      <p><strong>Say:</strong> "You've just made yourself a private workspace. Nothing you do from here touches anyone else until you push it and open a pull request."</p>
+      <p><strong>Checkpoint:</strong> ask everyone to paste their branch name in chat. Thirty seconds, tells you who's with you, and catches naming mistakes before they're pushed.</p>
+    </li>
+
+    <li>
+      <p class="stepname">do the "work"</p>
+      <div class="term"><span class="p">$</span> touch guestbook/EricHopper.txt
+<span class="p">$</span> notepad guestbook/EricHopper.txt</div>
+      <p><strong>Say:</strong> "On a real day this is where you'd do your actual engineering. Today it's a text file with your name on it."</p>
+      <p>Name and market only — <strong>the repo is public</strong>. Save, close Notepad.</p>
+      <p><strong>If asked why your filename has capitals:</strong> "the no-Shift rule is for branch names. Filenames just need to be sensible." Say it confidently and move on.</p>
+    </li>
+
+    <li>
+      <p class="stepname">what did Git notice?</p>
+      <div class="term"><span class="p">$</span> git status</div>
+      <p>File appears under <strong>Untracked files</strong>.</p>
+      <p><strong>Say:</strong> "Git can see your file, but it isn't watching it yet — it doesn't assume everything in the folder belongs in the repo. Now read the line underneath. It's telling you the next command."</p>
+    </li>
+
+    <li>
+      <p class="stepname">do what Git just told you</p>
+      <div class="term"><span class="p">$</span> git add guestbook/EricHopper.txt</div>
+    </li>
+
+    <li>
+      <p class="stepname">check again</p>
+      <div class="term"><span class="p">$</span> git status</div>
+      <p>Now under <strong>Changes to be committed</strong>.</p>
+      <p><strong>Say — why two steps:</strong> "With one file this feels like busywork. On a real change you might touch six files and only want three of them in this commit. <code>add</code> is you choosing what goes in. <code>commit</code> is you saving that choice."</p>
+    </li>
+
+    <li>
+      <p class="stepname">commit</p>
+      <div class="trap">
+        <span class="label">Say this BEFORE they type it</span>
+        <p>"You must include the <code>-m</code> and the message in quotes. If you forget, Git opens a full-screen editor called vim and you will not be able to figure out how to get out of it. If that happens: press <strong>Esc</strong>, then type <strong>:q!</strong> and hit Enter."</p>
+        <p>Have <code>Esc</code> <code>:q!</code> <code>Enter</code> on a slide. Somebody will need it.</p>
+      </div>
+      <div class="term"><span class="p">$</span> git commit -m "Added my name to the guestbook"</div>
+      <p>EXERCISE.md puts the warning above the command too — read it in that order so the handout and the screen agree.</p>
+    </li>
+
+    <li>
+      <p class="stepname">check again</p>
+      <div class="term"><span class="p">$</span> git status</div>
+      <p>Clean tree, and <strong>"ahead of 'origin/...' by 1 commit."</strong></p>
+      <p><strong>Say:</strong> "Saved on your machine. Still nobody else can see it. That word <em>ahead</em> is Git telling you that you have something the server doesn't."</p>
+    </li>
+
+    <li>
+      <p class="stepname">push</p>
+      <div class="term"><span class="p">$</span> git push -u origin training/hopper-eric</div>
+      <p><strong>Say:</strong> "Now it's on GitHub. <code>-u</code> links your branch to the server's copy, so next time plain <code>git push</code> is enough. Look at the output — GitHub prints you a link for opening a pull request."</p>
+    </li>
+
+    <li>
+      <p class="stepname">check one more time</p>
+      <div class="term"><span class="p">$</span> git status</div>
+      <p><strong>"up to date with 'origin/...'"</strong> — local and server match. The round trip is closed.</p>
+    </li>
+
+    <li>
+      <p class="stepname">open the PR in the browser</p>
+      <p>Click the printed link, or use <strong>Compare &amp; pull request</strong> on the repo. Base <code>master</code>, compare their branch, <strong>Create pull request</strong>.</p>
+      <p>Point out the auto-generated title — that's rule 4 paying off in real time.</p>
+      <p><strong>Say:</strong> "If you're done, help someone near you, or look at the 'Done early?' list at the bottom of EXERCISE.md. I'll merge them all in a few minutes."</p>
+    </li>
+  </ol>
+</section>
+
+<!-- ============ MERGE ============ -->
+<section class="block" id="merge">
+  <div class="blockhead"><span class="clock">0:27 – 0:30</span><h2>Merge live, then hand off</h2></div>
+  <p class="purpose">The payoff moment. Batch it — don't merge continuously while you're also teaching.</p>
+
+  <p>Share the Pull requests page. Work down the list approving and merging. It should be a few seconds each — a new file that conflicts with nothing.</p>
+
+  <div class="note">
+    <span class="label">If a PR is wrong — this is a gift, not a problem</span>
+    <p>Off-convention branch name, wrong base branch, file in the wrong place. <strong>Say it out loud and why</strong>, then let them fix it. Thirty seconds of real feedback on a real PR teaches more than the whole rules section. You are the reviewer; showing the room what review looks like <em>is</em> the lesson.</p>
+  </div>
+
+  <div class="say">
+    <span class="label">Say — the honest bit about main</span>
+    <p>"You'll notice none of you could push straight to <code>master</code> — it's protected, everything comes through a PR. That's true in the real repo for everyone including me. In this sandbox I have a bit more control, because somebody had to set it up."</p>
+  </div>
+
+  <div class="say">
+    <span class="label">Say — what's coming next time</span>
+    <p>"Things I deliberately skipped today, which we'll cover in future sessions: how LFS handles the Danfoss files and why they look like tiny text files sometimes; cloning only your own market's folder instead of all ten; what to do when two people edit the same binary and Git can't merge it; and file locking to stop that happening in the first place."</p>
+  </div>
+
+  <p>Then hand off: <em>"The files you'll actually be putting on these branches are what's coming up next — over to you."</em></p>
+</section>
+
+<!-- ============ OFFICE HOURS ============ -->
+<section class="block" id="hours">
+  <div class="blockhead"><span class="clock">0:30 – 1:00</span><h2>Office hours</h2></div>
+  <p class="purpose">Unstructured by design. Have a triage order so you don't spend all of it on one person.</p>
+
+  <ol>
+    <li><strong>Anyone who never got a working clone.</strong> Highest value — they can't participate at all until this is fixed. Credential problems first (see traps below).</li>
+    <li><strong>Anyone whose PR didn't land.</strong> Usually a push that failed or a branch made off the wrong base.</li>
+    <li><strong>Anyone who finished and wants more.</strong> Point them at <code>CONTRIBUTING.md</code> and the release-candidate flow. Let them talk to each other.</li>
+    <li><strong>The "how does this apply to my actual work" conversation.</strong> This is the most valuable thirty minutes available to you if the first three are clear.</li>
+  </ol>
+
+  <div class="note">
+    <span class="label">Ask before people drop off</span>
+    <p>"What's the thing about our repo that most makes you not want to use it?" Write the answers down. That's next month's session, chosen by the room instead of by you.</p>
+  </div>
+</section>
+
+<!-- ============ TRAPS ============ -->
+<section class="block" id="traps">
+  <div class="blockhead"><span class="clock">reference</span><h2>Traps, and the one-line fixes</h2></div>
+  <p class="purpose">Keep this visible. When somebody pastes an error in chat, match it here first.</p>
+
+  <h3>Stuck in a full-screen editor after <code>git commit</code></h3>
+  <p>They forgot <code>-m</code>. Press <strong>Esc</strong>, type <strong>:q!</strong>, Enter. Then redo the commit with <code>-m "message"</code>.</p>
+
+  <h3><code>Unable to create '.git/index.lock': File exists</code></h3>
+  <p>A previous git command was interrupted. Safe fix, as long as nothing else is running:</p>
+  <div class="term"><span class="p">$</span> rm -f .git/index.lock</div>
+
+  <h3><code>fatal: not a git repository</code></h3>
+  <p>They're in the wrong folder. <code>pwd</code> shows where they are; they want <code>/c/GitLocal/electrical-lfs-sandbox</code>. Remind them Git Bash writes <code>C:\</code> as <code>/c</code>.</p>
+
+  <h3><code>Repository not found</code>, or a 403, with no sign-in prompt</h3>
+  <p>Wrong GitHub account cached — common for contractors with a second account. Clear it and re-authenticate:</p>
+  <div class="term"><span class="p">$</span> printf "protocol=https\nhost=github.com\n" | git credential reject</div>
+  <p>If they need both accounts side by side:</p>
+  <div class="term"><span class="p">$</span> git config --global credential.https://github.com.useHttpPath true</div>
+
+  <h3><code>SSL certificate problem: unable to get local issuer certificate</code></h3>
+  <p>Corporate HTTPS inspection on a managed machine — browsers work, Git doesn't. They need their IT's CA bundle path:</p>
+  <div class="term"><span class="p">$</span> git config --global http.sslCAInfo "/c/path/to/ca-bundle.crt"</div>
+  <div class="trap">
+    <span class="label">Never</span>
+    <p>Do not let anyone "fix" this with <code>http.sslVerify false</code>. It appears to work and it disables certificate checking on a machine somebody else governs. Park them on the browser fallback instead.</p>
+  </div>
+
+  <h3><code>cannot lock ref</code> when creating a branch</h3>
+  <p>Rule 2. A branch already exists with a name that would have to be a folder. Pick a different name.</p>
+
+  <h3>Anything you can't fix in two minutes</h3>
+  <p>Browser fallback. On GitHub: open a file → pencil icon → edit → <em>"Create a new branch for this commit and start a pull request"</em> → name it per convention → commit. Branch, commit and PR, no terminal at all. They miss the command-line practice but not the workflow, and they're participating instead of watching.</p>
+</section>
+
+<footer>
+  <p>Runbook for the EE monthly session · sandbox repo <code>asirobots/electrical-lfs-sandbox</code> · participant walkthrough lives in <code>EXERCISE.md</code>, conventions in <code>CONTRIBUTING.md</code>.</p>
+</footer>
+
+</div>
